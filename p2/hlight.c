@@ -25,6 +25,12 @@
 #define INVALID_ENTITY 100
 
 /**
+   The exit status of the program. Remains successful if there are no errors, becomes
+   101 if there is an invalid tag, or 100 if there is an invalid entity.
+ */
+int exitStatus = EXIT_SUCCESS;
+
+/**
    Outputs the HTML tag read in from standard input with red text, or exits the program
    with an exit status of 101 if the end of file character is encountered before the closing
    '>' character.
@@ -46,7 +52,7 @@ void showTag()
     // Error handling.
     if ( ch == EOF ) {
         printf( ANSI_RESET );
-        exit( INVALID_TAG );
+        exitStatus = INVALID_TAG;
     }
 }
 
@@ -72,7 +78,7 @@ void showEntity()
     // Error handling.
     if ( ch == EOF ) {
         printf ( ANSI_RESET );
-        exit( INVALID_ENTITY );
+        exitStatus = INVALID_ENTITY;
     }
 }
 
@@ -95,5 +101,5 @@ int main()
             putchar( ch );
         }
     }
-    return EXIT_SUCCESS;
+    return exitStatus;
 }
