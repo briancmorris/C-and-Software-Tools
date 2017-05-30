@@ -1,9 +1,9 @@
 /**
-   @file hlight.c
-   @author Brian Morris (bcmorri3)
-   This program accepts HTML style input from standard input and outputs the provided
-   text with HTML tags highlighted red and HTML entities highlighted blue. If the provided
-   input has incomplete tags or entities, the program is exited with an unsuccessful exit status.
+    @file hlight.c
+    @author Brian Morris (bcmorri3)
+    This program accepts HTML style input from standard input and outputs the provided
+    text with HTML tags highlighted in red and HTML entities highlighted in blue. If the provided
+    input has incomplete tags or entities, the program is exited with an unsuccessful exit status.
  */
 
 #include <stdio.h>
@@ -25,15 +25,15 @@
 #define INVALID_ENTITY 100
 
 /**
-   The exit status of the program. Remains successful if there are no errors, becomes
-   101 if there is an invalid tag, or 100 if there is an invalid entity.
+    The exit status of the program. Remains successful if there are no errors, becomes
+    101 if there is an incomplete tag, or 100 if there is an incomplete entity.
  */
 int exitStatus = EXIT_SUCCESS;
 
 /**
-   Outputs the HTML tag read in from standard input with red text, or exits the program
-   with an exit status of 101 if the end of file character is encountered before the closing
-   '>' character.
+    Outputs the HTML tag read in from standard input with red text, or causes the program to exit
+    with an exit status of 101 if the end of file character is encountered before the closing
+    '>' character.
  */
 void showTag()
 {
@@ -57,9 +57,9 @@ void showTag()
 }
 
 /**
-   Outputs the HTML entity read in from standard input with blue text, or exits the program
-   with an exit status of 100 if the end of file character is encountered before the closing
-   ';' character.
+    Outputs the HTML entity read in from standard input with blue text, or causes the program to
+    exit with an exit status of 100 if the end of file character is encountered before the closing
+    ';' character.
  */
 void showEntity()
 {
@@ -83,9 +83,9 @@ void showEntity()
 }
 
 /**
-   Starting point of the program. Moves through standard input and outputs the text with the
-   appropriate highlighting by calling the showEntity and showTag functions as needed.
-   @return Exit status for the program.
+    Starting point of the program. Moves through standard input and outputs the text with the
+    appropriate highlighting by calling the showEntity and showTag functions as needed.
+    @return Exit status for the program.
  */
 int main()
 {

@@ -1,8 +1,10 @@
 /**
-   This program outputs a 100x100 pixel voronoi diagram by accepting
-   6 double values from standard input representing the (x, y) coordinates
-   of 3 points on the diagram and fills in the remaining coordinates with the
-   appropriate colors.
+    @file voronoi.c
+    @author Brian Morris (bcmorri3)
+    This program outputs a 100x100 pixel voronoi diagram by accepting
+    6 double values from standard input representing the (x, y) coordinates
+    of 3 points on the diagram and fills in the remaining diagram coordinates with the
+    appropriate colors.
  */
 
 #include <stdio.h>
@@ -47,15 +49,15 @@ double p3x;
 double p3y;
 
 /**
-   This function returns true if the provided pixel (col, row) is the
-   closest point in the diagram to the rounded integer coordinates of
-   the given input point (x, y).
-   @param col the column number of the pixel
-   @param row the row number of the pixel
-   @param x the x coordinate of the input point
-   @param y the y coordinate of the input point
-   @return True if the provided pixel is the closest point in the diagram
-           to the rounded integer coordinates of the given input point.
+    This function returns true if the provided pixel (col, row) is the
+    closest point in the diagram to the rounded integer coordinates of
+    the given input point (x, y).
+    @param col the column number of the pixel
+    @param row the row number of the pixel
+    @param x the x coordinate of the input point
+    @param y the y coordinate of the input point
+    @return true if the provided pixel is the closest point in the diagram
+            to the rounded integer coordinates of the given input point.
  */
 bool nearestPoint( int col, int row, double x, double y )
 {
@@ -72,12 +74,12 @@ bool nearestPoint( int col, int row, double x, double y )
 }
 
 /**
-   This function accepts the provided pixel (col, row) and prints the pixel with the
-   appropriate color. If it's closest to one of the 3 provided points, it becomes white,
-   if it's closest to the first point, it becomes red, if it's closest to the second point it
-   becomes green, and if it's closest to the third point it becomes blue.
-   @param col the pixel column
-   @param row the pixel row
+    This function accepts the provided pixel (col, row) and prints the pixel with the
+    appropriate color. If it's the closest pixel to one of the 3 input points, it becomes white,
+    if it's closest to the first point, it becomes red, if it's closest to the second point it
+    becomes green, and if it's closest to the third point it becomes blue.
+    @param col the column number of the pixel
+    @param row the row number of the pixel
  */
 void chooseColor ( int col, int row )
 {
@@ -107,10 +109,10 @@ void chooseColor ( int col, int row )
 }
 
 /**
-   The starting point of the program. Accepts 3 points from standard input in (x, y) coordinates
-   and creates a 100x100 pixel voronoi diagram based on the position of the 3 points. Returns the
-   exit status of the program.
-   @return Exit status of the program.
+    The starting point of the program. Accepts 3 points from standard input in (x, y) coordinates
+    and creates a 100x100 pixel voronoi diagram based on the position of the 3 points. Returns the
+    exit status of the program.
+    @return Exit status of the program.
  */
 int main()
 {
