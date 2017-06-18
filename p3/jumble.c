@@ -19,7 +19,7 @@
 /** The maximum number of characters a word can contain including the null terminator. */
 #define MAX_CHARS 21
 
-/** The exit status of the program in the event of an error or invalid input. */
+/** The exit status of the program in the event of an error. */
 #define ERROR_STATUS 1
 
 /** The number of valid command line arguments that must be input to run the program. */
@@ -28,9 +28,8 @@
 /** The position of the file name found within the command line arguments array. */
 #define FILE_NAME_ARGS 1
 
-/** The length of a temporary array used to store and check input for validity. */
+/** The length of temporary arrays used to store and check input for validity. */
 #define TEMP_SIZE 50
-
 
 /** The two-dimensional array of characters used to store the words found in the input file. */
 static char words[ MAX_WORDS ][ MAX_CHARS ];
@@ -38,13 +37,23 @@ static char words[ MAX_WORDS ][ MAX_CHARS ];
 /** The number of words found within the input file. */
 int wordCount;
 
+/**
+    The matches function returns true if the provided word is composed of the exact letters
+    contained within the letters array, false otherwise.
+
+    @param word the word that will be compared to letters.
+    @param letters the letters used to make up a word, provided by user input.
+
+    @return True if the word is composed of the exact letters contained within the letters array,
+            false otherwise.
+ */
 bool matches( char const *word, char const *letters )
 {
     // Length of both char arrays.
     int wordLen = strlen( word );
     int lettersLen = strlen( letters );
 
-    // If the length of the word and user input don't match, return false.
+    // If the length of word and letters don't match, return false.
     if ( wordLen != lettersLen ) {
         return false;
     }
@@ -56,7 +65,7 @@ bool matches( char const *word, char const *letters )
         temp[ i ] = *( word + i );
     }
 
-    // Compare content of letters array to contents of temp. If there is a match, replace
+    // Compare contents of letters to contents of temp. If there is a match, replace
     // temp contents with a space ' '.
     for ( int i = 0; i < lettersLen; i++ ) {
         for ( int j = 0; j < tempLen; j++ ) {
@@ -66,7 +75,7 @@ bool matches( char const *word, char const *letters )
             }
         }
     }
-    
+
     // Make sure the contents of temp are all spaces.
     for ( int i = 0; i < tempLen; i++ ) {
         if ( temp[ i ] != ' ' ) {
@@ -79,12 +88,14 @@ bool matches( char const *word, char const *letters )
 }
 
 /**
-    The get letters function continuously prompts the user for letters until valid input
+    The getLetters function continuously prompts the user for letters until valid input
     is provided or end of file is encountered. If valid input is provided, the function
     returns true. If end of file is encountered, the function returns false. Input is
     considered valid if the input string consists of all lowercase letters that are up to
     20 characters in length.
+
     @param letters a char array used to store valid input.
+
     @return true if the user inputs valid letters, false if EOF is encountered.
  */
 bool getLetters( char *letters )
@@ -106,8 +117,7 @@ bool getLetters( char *letters )
 
         // If the number of characters input is invalid, reprompt user.
         if ( len > MAX_CHARS ) {
-            printf( "Invalid letters\n" );
-            printf( "letters> ");
+            printf( "Invalid letters\nletters> ");
         } else {
             // Determine if user input is composed of valid characters.
             for (int i = 0; i < len; i++ ) {
@@ -129,40 +139,13 @@ bool getLetters( char *letters )
                 return true;
             } else {
                 // Reprompt user.
-                printf( "Invalid letters\n" );
-                printf( "letters> " );
+                printf( "Invalid letters\nletters> " );
             }
         }
     }
 
     // EOF has been encountered, print new line and return false.
     return false;
-
-    // Consider shadowing.
-    // Consider nested while loops EOF '\n'.
-    /*
-        while ( ( ch = getchar() ) != EOF ) {
-        // If the number of characters input is too many, reprompt user.
-        if ( charCount >= MAX_CHARS ) {
-            printf( "Invalid letters\nletters> " );
-            charCount = 0;
-        } else if ( ch == '\n') { // Handle new line.
-            if ( charCount == 0 ) {
-                printf( "Invalid letters\nletters> ");
-            } else {
-                break;
-            }
-        } else if ( ch < 'a' || ch > 'z' ) { // Make sure letters are valid.
-            printf( "Invalid letters\nletters> ");
-            charCount = 0;
-        } else { // Add to temporary array.
-            temp[ charCount++ ] = ch;
-        }
-    }
-    
-    if ( ch == '\n' && charCount < MAX_CHARS ) {
-        
-    }*/
 }
 
 /**
@@ -170,6 +153,7 @@ bool getLetters( char *letters )
     and stores them in the two-dimensional words array. If there is an issue with opening the file
     or any of the words found within the file are invalid, the program is exited with a status
     of 1.
+
     @param filename the name of the input file
  */
 void readWords( char const *filename )
@@ -177,9 +161,8 @@ void readWords( char const *filename )
     FILE *input = fopen( filename, "r" );
 
     // If the file can't be opened.
-    if ( input == NULL ) {
+    if ( !input ) {
         fprintf( stderr, "Can't open word file\n" );
-        fclose ( input );
         exit( ERROR_STATUS );
     }
 
@@ -189,20 +172,16 @@ void readWords( char const *filename )
 
     // While scanf has a string match.
     while ( fscanf( input, "%s", temp ) == 1 ) {
-        //printf( "The temporary word is: %s\n", temp );
-        
         // Handle too many words.
         if ( wordCount >= MAX_WORDS ) {
             goto invalid;
         }
-        //printf( "%s survived word count\n", temp );
-        
+
         // Handle invalid number of characters.
         len = strlen( temp ) + 1; // Account for null terminator.
         if ( len > MAX_CHARS ) {
             goto invalid;
         }
-        //printf( "%s survived str len\n", temp );
 
         // Check that all characters are lowercase letters or null terminator.
         for ( int i = 0; i < len; i++ ) {
@@ -212,8 +191,7 @@ void readWords( char const *filename )
                 words[ wordCount ][ i ] = temp[ i ];
             }
         }
-        //printf( "%s survived valid characters\n", temp );
-        //printf( "%s is stored in the array\n", words[ wordCount ] );
+
         wordCount++;
     }
     goto valid;
@@ -229,6 +207,21 @@ void readWords( char const *filename )
     fclose( input );
 }
 
+/**
+    The main function is the starting point of the jumble program. The main function
+    reads a file name provided by command line arguments and passes it to the readWords
+    function for the contents to be stored within the two-dimensional words array. Once
+    the contents of the input file have been stored, the main function then continuously
+    prompts the user for letters by using the getLetters function until EOF is encountered.
+    All words found within the words array that contain the exact letters provided by the
+    user are displayed for their convenience. If there is an invalid number of command-line
+    arguments, the program is exited with an error status of 1.
+
+    @param argc the number of command-line arguments.
+    @param argv array of command-line arguments.
+
+    @return program exit status
+ */
 int main( int argc, char *argv[] )
 {
     // Handle invalid number of command line arguments.
@@ -252,9 +245,8 @@ int main( int argc, char *argv[] )
             }
         }
 
-        //printf("Returned True\n");
         prompt = getLetters( letters );
     }
-    //printf("Returned False\n");
+
     return EXIT_SUCCESS;
 }
