@@ -47,9 +47,9 @@ void printGrid ( int rows, int cols, char board[ rows ][ cols ] )
              ch = board[ i ][ j ];
              // If it's not the final character of a row, print the char with a trailing space.
              if ( j < cols - 1) {
-                 printf( "%c ", board[ i ][ j ] );
+                 printf( "%c ", ch );
              } else {
-                 printf( "%c", board[ i ][ j ] );
+                 printf( "%c", ch );
              }
         }
         // Start a new row.

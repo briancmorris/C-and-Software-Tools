@@ -94,7 +94,7 @@ int main( int argc, char *argv[] )
 
     // Create grid for puzzle and fill with spaces to remove garbage.
     char grid[ rows ][ cols ];
-    for( int i = 0; i < rows; i++ ) {
+    for ( int i = 0; i < rows; i++ ) {
         for ( int j = 0; j < cols; j++ ) {
             grid[ i ][ j ] = ' ';
         }
@@ -113,7 +113,7 @@ int main( int argc, char *argv[] )
     int cpos;
 
     // Loop until there is no more input or the number of required words have been found.
-    while( fscanf( input, "%c %d %d %s\n", &orientation, &rpos, &cpos, word ) == FSCANF_WORD
+    while ( fscanf( input, "%c %d %d %s\n", &orientation, &rpos, &cpos, word ) == FSCANF_WORD
                    && wordCount < numWords ) {
 
         // The length of the word.
@@ -145,7 +145,7 @@ int main( int argc, char *argv[] )
 
         // Ensure all letters within the word are valid.
         for ( int i = 0; i < len; i++ ) {
-            if( word[ i ] < 'A' || word[ i ] > 'Z' ) {
+            if ( word[ i ] < 'A' || word[ i ] > 'Z' ) {
                 fprintf( stderr, "Invalid input file\n" );
                 return ERROR_STATUS;
             }
