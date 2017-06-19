@@ -1,11 +1,12 @@
 /**
     @file jumble.c
     @author Brian Morris (bcmorri3)
-    The jumble program accepts an file name from command line arguments and stores
+
+    The jumble program accepts an file name from command-line arguments and stores
     the words found within the file in a two-dimensional array that can be searched
     for with user input. The program allows the user to find all words contained within the
     file that have the exact characters specified by the user. If any file errors occur
-    or the number of command line arguments are invalid, the program is exited with a status of 1.
+    or the number of command-line arguments are invalid, the program is exited with a status of 1.
  */
 
 #include <stdio.h>
@@ -22,10 +23,10 @@
 /** The exit status of the program in the event of an error. */
 #define ERROR_STATUS 1
 
-/** The number of valid command line arguments that must be input to run the program. */
+/** The number of valid command-line arguments that must be input to run the program. */
 #define VALID_ARGS 2
 
-/** The position of the file name found within the command line arguments array. */
+/** The position of the file name found within the command-line arguments array. */
 #define FILE_NAME_ARGS 1
 
 /** The length of temporary arrays used to store and check input for validity. */
@@ -115,7 +116,7 @@ bool getLetters( char *letters )
         // Account for null terminator.
         len = strlen( temp ) + 1;
 
-        // If the number of characters input is invalid, reprompt user.
+        // If the number of characters input is invalid, re-prompt user.
         if ( len > MAX_CHARS ) {
             printf( "Invalid letters\nletters> ");
         } else {
@@ -138,7 +139,7 @@ bool getLetters( char *letters )
                 //printf( "Valid letters are: %s\n", letters );
                 return true;
             } else {
-                // Reprompt user.
+                // Re-prompt user.
                 printf( "Invalid letters\nletters> " );
             }
         }
@@ -209,7 +210,7 @@ void readWords( char const *filename )
 
 /**
     The main function is the starting point of the jumble program. The main function
-    reads a file name provided by command line arguments and passes it to the readWords
+    reads a file name provided by command-line arguments and passes it to the readWords
     function for the contents to be stored within the two-dimensional words array. Once
     the contents of the input file have been stored, the main function then continuously
     prompts the user for letters by using the getLetters function until EOF is encountered.
@@ -224,7 +225,7 @@ void readWords( char const *filename )
  */
 int main( int argc, char *argv[] )
 {
-    // Handle invalid number of command line arguments.
+    // Handle invalid number of command-line arguments.
     if ( argc != VALID_ARGS ) {
         fprintf( stderr, "usage: jumble <word-file>\n" );
         return ERROR_STATUS;

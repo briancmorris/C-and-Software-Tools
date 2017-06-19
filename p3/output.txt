@@ -1,4 +1,0 @@
-Survived valid command line arguments.
-Survived opening file check.
-Survived proper grid format.
-Survived row/column check.
