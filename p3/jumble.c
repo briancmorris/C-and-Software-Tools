@@ -226,7 +226,7 @@ int main( int argc, char *argv[] )
 {
     // Handle invalid number of command line arguments.
     if ( argc != VALID_ARGS ) {
-        fprintf( stderr, "usage: jumble <word-file>\n");
+        fprintf( stderr, "usage: jumble <word-file>\n" );
         return ERROR_STATUS;
     }
 
