@@ -2,7 +2,7 @@
     @file jumble.c
     @author Brian Morris (bcmorri3)
 
-    The jumble program accepts an file name from command-line arguments and stores
+    The jumble program accepts a file name from command-line arguments and stores
     the words found within the file in a two-dimensional array that can be searched
     for with user input. The program allows the user to find all words contained within the
     file that have the exact characters specified by the user. If any file errors occur
@@ -42,8 +42,8 @@ int wordCount;
     The matches function returns true if the provided word is composed of the exact letters
     contained within the letters array, false otherwise.
 
-    @param word the word that will be compared to letters.
-    @param letters the letters used to make up a word, provided by user input.
+    @param word the word that will be compared to the letters array.
+    @param letters the letters used to make up a word.
 
     @return True if the word is composed of the exact letters contained within the letters array,
             false otherwise.
@@ -145,7 +145,7 @@ bool getLetters( char *letters )
         }
     }
 
-    // EOF has been encountered, print new line and return false.
+    // EOF has been encountered, return false.
     return false;
 }
 

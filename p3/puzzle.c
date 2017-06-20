@@ -42,7 +42,7 @@
 #define FSCANF_WORD 4
 
 /**
-    The main function is the starting point of the program, reads words from the input file,
+    The main function is the starting point of the program; it reads words from the input file
     and uses the functions described by the grid.h header file to display the crossword puzzle.
     The main function is responsible for all error checking within the program. Predominantly,
     this is related to input file formatting. Errors include: an invalid number of command-line
@@ -114,7 +114,7 @@ int main( int argc, char *argv[] )
 
     // Loop until there is no more input or the number of required words have been found.
     while ( fscanf( input, "%c %d %d %s\n", &orientation, &rpos, &cpos, word ) == FSCANF_WORD
-                   && wordCount < numWords ) {
+                    && wordCount < numWords ) {
 
         // The length of the word.
         int len = strlen( word );
