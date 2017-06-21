@@ -33,13 +33,16 @@
 #define FILE_NAME_ARGS 1
 
 /** The length of the array used to store a word from input to ensure there is no overflow. */
-#define WORD_SIZE 50
+#define WORD_SIZE 12
 
 /** The number of arguments that fscanf must find in order to have a valid grid format. */
 #define FSCANF_GRID 3
 
 /** The number of arguments that fscanf must find in order to have a valid word. */
 #define FSCANF_WORD 4
+
+/** The format string used with fscanf to see if a word in the input file has more than 10 chars. */
+#define FSCANF_FORMAT "%c %d %d %11s\n"
 
 /**
     The main function is the starting point of the program; it reads words from the input file
@@ -113,7 +116,7 @@ int main( int argc, char *argv[] )
     int cpos;
 
     // Loop until there is no more input or the number of required words have been found.
-    while ( fscanf( input, "%c %d %d %s\n", &orientation, &rpos, &cpos, word ) == FSCANF_WORD
+    while ( fscanf( input, FSCANF_FORMAT, &orientation, &rpos, &cpos, word ) == FSCANF_WORD
                     && wordCount < numWords ) {
 
         // The length of the word.

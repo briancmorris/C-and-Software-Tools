@@ -30,7 +30,10 @@
 #define FILE_NAME_ARGS 1
 
 /** The length of temporary arrays used to store and check input for validity. */
-#define TEMP_SIZE 50
+#define TEMP_SIZE 22
+
+/** The format string used with scanf to see if a user or file input more than 20 characters. */
+#define SCANF_FORMAT "%21s"
 
 /** The two-dimensional array of characters used to store the words found in the input file. */
 static char words[ MAX_WORDS ][ MAX_CHARS ];
@@ -112,8 +115,8 @@ bool getLetters( char *letters )
     printf( "letters> ");
 
     // Continuously prompt if needed.
-    while ( scanf( "%s", temp ) == 1) {
-        // Account for null terminator.
+    while ( scanf( SCANF_FORMAT, temp ) == 1) {
+        // Consider null terminator.
         len = strlen( temp ) + 1;
 
         // If the number of characters input is invalid, re-prompt user.
@@ -172,7 +175,7 @@ void readWords( char const *filename )
     char temp[ TEMP_SIZE ];
 
     // While scanf has a string match.
-    while ( fscanf( input, "%s", temp ) == 1 ) {
+    while ( fscanf( input, SCANF_FORMAT, temp ) == 1 ) {
         // Handle too many words.
         if ( wordCount >= MAX_WORDS ) {
             goto invalid;
