@@ -1,6 +1,6 @@
 # Default options.
 CC = gcc
-CFLAGS = -g -Wall -std=c99
+CFLAGS = -g -Wall -std=c99 -D_GNU_SOURCE
 LDLIBS = -lm
 
 # Executable

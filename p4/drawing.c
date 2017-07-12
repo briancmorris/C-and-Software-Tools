@@ -128,11 +128,12 @@ void rotate( double pt[ NUM_COORDS ], double a, double b )
     pt[ Y_COORD ] = originalX * sin( a * PI / DEG_TO_RAD ) + originalY * cos( a * PI / DEG_TO_RAD );
 }
 
-void flushInput()
+void flushInput( Scene *s )
 {
     int ch;
     while( ( ch = getchar() ) != '\n' ) {
         if( ch == EOF ) {
+            freeScene( s );
             exit( EXIT_SUCCESS );
         }
     }
@@ -154,30 +155,37 @@ void loadCommand( Scene *s, int commandNum, char const * params )
 {
     char modelName[ NAME_LEN + 2 ];
     char fileName[ NAME_LEN + 2 ];
-    //char trailingChar;
-
-    if ( sscanf( params, SCAN_LOAD, modelName, fileName ) != 2 ) {
+    char trailingChar;
+    
+    FILE *sparams = fmemopen((void *)params, strlen(params), "r");
+    
+    if ( fscanf( sparams, SCAN_LOAD, modelName, fileName ) != 2 ) {
         fprintf( stderr, "Command %d invalid\n", commandNum );
+        fclose(sparams);
         return;
     }
 
-    //if ( sscanf( params, "%c", &trailingChar ) == 1 && trailingChar != '\n' && trailingChar != EOF && trailingChar != '\0' ) {
-    //    fprintf( stderr, "Command %d invalid\n", commandNum );
-    //    return;
-    //}
+    if ( fscanf( sparams, "%c", &trailingChar ) == 1 && trailingChar != '\n' && trailingChar != EOF && trailingChar != '\0' ) {
+        fprintf( stderr, "Command %d invalid\n", commandNum );
+        fclose(sparams);
+        return;
+    }
 
     if ( strlen( modelName ) > NAME_LEN || strlen( fileName ) > NAME_LEN ) {
         fprintf( stderr, "Command %d invalid\n", commandNum );
+        fclose(sparams);
         return;
     }
 
     bool hasModel = containsModel( s, modelName );
     if ( hasModel ) {
         fprintf( stderr, "Command %d invalid\n", commandNum );
+        fclose(sparams);
         return;
     }
 
     addModel( s, fileName, modelName );
+    fclose(sparams);
 }
 
 void saveCommand( Scene *s, int commandNum, char const * params )
@@ -366,7 +374,7 @@ int main()
     printf( "cmd %d> ", commandNum );
     while ( fgets( params, sizeof( params ), stdin ) ) {
         if( params[ strlen( params ) - 1 ] != '\n' ) {
-            flushInput();
+            flushInput( s );
         }
 
         sscanf( params, SCAN_COMMAND, command );
