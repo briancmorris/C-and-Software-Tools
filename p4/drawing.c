@@ -128,15 +128,15 @@ void rotate( double pt[ NUM_COORDS ], double a, double b )
     pt[ Y_COORD ] = originalX * sin( a * PI / DEG_TO_RAD ) + originalY * cos( a * PI / DEG_TO_RAD );
 }
 
-//void flushInput()
-//{
-//    int ch;
-//    while( ( ch = getchar() ) != '\n' ) {
-//        if( ch == EOF ) {
-//            exit( EXIT_SUCCESS );
-//        }
-//    }
-//}
+void flushInput()
+{
+    int ch;
+    while( ( ch = getchar() ) != '\n' ) {
+        if( ch == EOF ) {
+            exit( EXIT_SUCCESS );
+        }
+    }
+}
 
 int getValidCommand( char const * command )
 {
@@ -365,6 +365,10 @@ int main()
 
     printf( "cmd %d> ", commandNum );
     while ( fgets( params, sizeof( params ), stdin ) ) {
+        if( params[ strlen( params ) - 1 ] != '\n' ) {
+            flushInput();
+        }
+
         sscanf( params, SCAN_COMMAND, command );
         int commandIndex = getValidCommand( command );
 
