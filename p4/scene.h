@@ -2,9 +2,10 @@
     @file scene.h
     @author Brian Morris (bcmorri3)
 
-    The scene header file contains declarations of all of the functions required to
-    manipulate a Scene object and work with Models.
+    The scene.h header file contains declarations of all of the functions required to
+    manipulate a Scene object and work with the Models within them.
  */
+
 #ifndef _SCENE_H_
 #define _SCENE_H_
 
@@ -73,12 +74,12 @@ void addModel( Scene *s, char const *fname, char const *mname );
     @param s a Scene that may contain a Mode with the given name.
     @param mname the name of the Model in question.
 
-    @return true if the given Scene contains the given Model.
+    @return True if the given Scene contains the given Model.
  */
 bool containsModel( Scene *s, char const *mname );
 
 /**
-    The saveScene function saves the the line segments of the models found within the
+    The saveScene function saves the the line segments of the Models found within the
     given Scene to an output file with the given file name. If the output file can't  be
     opened, an error message is output and no output file is saved.
 

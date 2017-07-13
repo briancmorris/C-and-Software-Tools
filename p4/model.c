@@ -117,7 +117,7 @@ Model *copyModel( Model * const sourceModel )
     // Determine the number of points in the copied Model.
     int numPoints = sourceModel->pCount;
 
-    // Dynamically allocate the merged Model.
+    // Dynamically allocate the copied Model.
     Model *m = (Model *)malloc( sizeof( Model ) );
     m->pList = (double (*)[ NUM_COORDS ])malloc( numPoints * NUM_COORDS * sizeof( double ) );
     m->pCount = numPoints;
