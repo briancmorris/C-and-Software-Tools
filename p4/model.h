@@ -68,4 +68,16 @@ void freeModel( Model *m );
 void applyToModel( Model *m, void (*f)( double pt[ NUM_COORDS ], double a, double b ), double a,
                    double b );
 
+/**
+    This function accepts two Model pointers as parameters and merges the points found within
+    both models into a single Model pointer. The points of sourceModel1 are added before the
+    points of sourceModel2.
+
+    @param sourceModel1 the first source Model to merge.
+    @param sourceModel2 the second source Model to merge.
+
+    @return A pointer to a new, merged Model.
+ */
+Model *mergeModels( Model * sourceModel1, Model * sourceModel2 );
+
 #endif

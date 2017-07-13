@@ -81,3 +81,32 @@ void applyToModel( Model *m, void (*f)( double pt[ NUM_COORDS ], double a, doubl
         f( m->pList[ i ], a, b );
     }
 }
+
+Model *mergeModels( Model * sourceModel1, Model * sourceModel2 )
+{
+    // Determine the number of points in the merged Model.
+    int numPoints = sourceModel1->pCount + sourceModel2->pCount;
+    // Dynamically allocate the merged Model.
+    Model *m = (Model *)malloc( sizeof( Model ) );
+    m->pList = (double (*)[ NUM_COORDS ])malloc( numPoints * NUM_COORDS * sizeof( double ) );
+    m->pCount = numPoints;
+    strcpy( m->fname, "-" );
+
+    // Counter for merged Model pList index.
+    int count = 0;
+
+    // Give it the points of sourceModel1.
+    for ( int i = 0; i < sourceModel1->pCount; i++ ) {
+        m->pList[ count ][ 0 ] = sourceModel1->pList[ i ][ 0 ];
+        m->pList[ count ][ 1 ] = sourceModel1->pList[ i ][ 1 ];
+        count++;
+    }
+    // Give it the points of sourceModel2.
+    for ( int i = 0; i < sourceModel1->pCount; i++ ) {
+        m->pList[ count ][ 0 ] = sourceModel2->pList[ i ][ 0 ];
+        m->pList[ count ][ 1 ] = sourceModel2->pList[ i ][ 1 ];
+        count++;
+    }
+
+    return m;
+}

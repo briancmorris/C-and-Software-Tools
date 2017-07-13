@@ -734,30 +734,9 @@ void mergeCommand( Scene *s, int commandNum, char const * params )
         fclose( sparams );
         return;
     } else {
-        // Determine the number of points in the merged Model.
-        int numPoints = sourceModel1->pCount + sourceModel2->pCount;
-        // Dynamically allocate the merged Model.
-        Model *m = (Model *)malloc( sizeof( Model ) );
-        m->pList = (double (*)[ NUM_COORDS ])malloc( numPoints * NUM_COORDS * sizeof( double ) );
-        m->pCount = numPoints;
-        strcpy( m->fname, "-" );
+        // Merge the models.
+        Model *m = mergeModels( sourceModel1, sourceModel2 );
         strcpy( m->name, destName );
-
-        // Counter for merged Model pList index.
-        int count = 0;
-
-        // Give it the points of sourceModel1.
-        for ( int i = 0; i < sourceModel1->pCount; i++ ) {
-            m->pList[ count ][ X_COORD ] = sourceModel1->pList[ i ][ X_COORD ];
-            m->pList[ count ][ Y_COORD ] = sourceModel1->pList[ i ][ Y_COORD ];
-            count++;
-        }
-        // Give it the points of sourceModel2.
-        for ( int i = 0; i < sourceModel1->pCount; i++ ) {
-            m->pList[ count ][ X_COORD ] = sourceModel2->pList[ i ][ X_COORD ];
-            m->pList[ count ][ Y_COORD ] = sourceModel2->pList[ i ][ Y_COORD ];
-            count++;
-        }
 
         //Add the merged Model to the list.
         addModelPointer( s, m );
