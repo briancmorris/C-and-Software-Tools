@@ -812,7 +812,7 @@ int main()
 
         // If the command is valid, determine which function to call.
         if ( commandIndex != INVALID_COMMAND ) {
-            switch( commandIndex ) {
+            switch ( commandIndex ) {
                 case LOAD_COMMAND:
                     loadCommand( s, commandNum, params );
                     break;
