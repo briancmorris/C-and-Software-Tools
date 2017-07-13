@@ -102,7 +102,7 @@ Model *mergeModels( Model * sourceModel1, Model * sourceModel2 )
         count++;
     }
     // Give it the points of sourceModel2.
-    for ( int i = 0; i < sourceModel1->pCount; i++ ) {
+    for ( int i = 0; i < sourceModel2->pCount; i++ ) {
         m->pList[ count ][ 0 ] = sourceModel2->pList[ i ][ 0 ];
         m->pList[ count ][ 1 ] = sourceModel2->pList[ i ][ 1 ];
         count++;

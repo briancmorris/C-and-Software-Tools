@@ -1,0 +1,19 @@
+load m koch.txt
+scale m 0.3333
+copy m1 m
+copy m2 m
+copy m3 m
+copy m4 m
+rotate m2 60
+translate m3 -1 0
+rotate m3 -60
+translate m2 1 0
+translate m3 2 0
+translate m4 2 0
+delete m
+merge c1 m1 m2
+merge c2 m3 m4
+merge m c1 c2
+list
+save output.txt
+quit

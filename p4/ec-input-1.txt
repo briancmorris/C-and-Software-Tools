@@ -1,0 +1,12 @@
+load s1 square.txt
+rotate s1 10
+scale s1 0.9
+copy s2 s1
+rotate s2 10
+scale s2 0.9
+copy s3 s2
+rotate s3 10
+scale s3 0.9
+list
+save output.txt
+quit

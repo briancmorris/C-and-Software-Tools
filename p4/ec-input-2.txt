@@ -1,0 +1,8 @@
+load c circle.txt
+load s square.txt
+list
+merge cs c s
+list
+scale cs 5
+save output.txt
+quit
