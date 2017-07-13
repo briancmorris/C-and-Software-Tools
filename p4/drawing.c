@@ -661,7 +661,12 @@ void copyCommand( Scene *s, int commandNum, char const * params )
         fclose( sparams );
         return;
     } else {
-        addModel( s, sourceModel->fname, destName );
+        // Create a copy.
+        Model *duplicate = copyModel( sourceModel );
+        // Assign it a name.
+        strcpy( duplicate->name, destName );
+        // Add it to the Scene.
+        addModelPointer( s, duplicate );
     }
 
     // Close file object.

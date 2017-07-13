@@ -82,7 +82,7 @@ void applyToModel( Model *m, void (*f)( double pt[ NUM_COORDS ], double a, doubl
     }
 }
 
-Model *mergeModels( Model * sourceModel1, Model * sourceModel2 )
+Model *mergeModels( Model * cosnt sourceModel1, Model * const sourceModel2 )
 {
     // Determine the number of points in the merged Model.
     int numPoints = sourceModel1->pCount + sourceModel2->pCount;
@@ -109,5 +109,26 @@ Model *mergeModels( Model * sourceModel1, Model * sourceModel2 )
     }
 
     // Return the merged model.
+    return m;
+}
+
+Model *copyModel( Model * const sourceModel )
+{
+    // Determine the number of points in the copied Model.
+    int numPoints = sourceModel->pCount;
+
+    // Dynamically allocate the merged Model.
+    Model *m = (Model *)malloc( sizeof( Model ) );
+    m->pList = (double (*)[ NUM_COORDS ])malloc( numPoints * NUM_COORDS * sizeof( double ) );
+    m->pCount = numPoints;
+    strcpy( m->fname, sourceModel->fname );
+
+    // Give it the points of the source Model.
+    for ( int i = 0; i < numPoints; i++ ) {
+        m->pList[ i ][ 0 ] = sourceModel1->pList[ i ][ 0 ];
+        m->pList[ i ][ 1 ] = sourceModel1->pList[ i ][ 1 ];
+    }
+
+    // Return the duplicate.
     return m;
 }

@@ -78,6 +78,16 @@ void applyToModel( Model *m, void (*f)( double pt[ NUM_COORDS ], double a, doubl
 
     @return A pointer to a new, merged Model.
  */
-Model *mergeModels( Model * sourceModel1, Model * sourceModel2 );
+Model *mergeModels( Model * const sourceModel1, Model * const sourceModel2 );
+
+/**
+    This function accepts a source Model pointer and creates a dynamically allocated
+    duplicate of the source Model. A pointer to the duplicate is returned.
+
+    @param sourceModel the source Model of the duplicate.
+
+    @return A pointer to the duplicate Model.
+ */
+Model *copyModels( Model * const sourceModel );
 
 #endif
