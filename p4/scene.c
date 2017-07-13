@@ -171,6 +171,7 @@ Model *getModel( Scene *s, char const *mname )
     // See if there's a matching Model.
     for ( int i = 0; i < s->mCount; i++ ) {
         if ( strcmp( mname, s->mList[ i ]->name ) == 0 ) {
+            // Return the match.
             return s->mList[ i ];
         }
     }

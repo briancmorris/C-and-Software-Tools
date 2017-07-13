@@ -108,5 +108,6 @@ Model *mergeModels( Model * sourceModel1, Model * sourceModel2 )
         count++;
     }
 
+    // Return the merged model.
     return m;
 }

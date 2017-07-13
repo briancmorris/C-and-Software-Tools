@@ -19,7 +19,7 @@
 /** The array position of an x-coordinate to a point in a line segment. */
 #define X_COORD 0
 
-/** The array positio of a y-coordinate to a point in a line segment. */
+/** The array position of a y-coordinate to a point in a line segment. */
 #define Y_COORD 1
 
 /** The value of pi. */
@@ -28,7 +28,7 @@
 /** The number of degrees that must be used to convert degrees to radians. */
 #define DEG_TO_RAD 180
 
-/** The number of valid commands for the progam. */
+/** The number of valid commands for the program. */
 #define NUM_VALID_COMMANDS 10
 
 /** The maximum length of a command string. */
@@ -100,13 +100,13 @@
 /** The length of the string used to parse parameters. */
 #define PARAM_LEN 1000
 
-/** The number of matches that sscanf must find for a command with 1 parameter to be valid. */
+/** The number of matches that fscanf must find for a command with 1 parameter to be valid. */
 #define ONE_REQUIRED 1
 
-/** The number of matches that sscanf must find for a command with 2 parameters to be valid. */
+/** The number of matches that fscanf must find for a command with 2 parameters to be valid. */
 #define TWO_REQUIRED 2
 
-/** The number of matches that sscanf must find for a command with 3 parameters to be valid. */
+/** The number of matches that fscanf must find for a command with 3 parameters to be valid. */
 #define THREE_REQUIRED 3
 
 /**
@@ -225,7 +225,7 @@ void loadCommand( Scene *s, int commandNum, char const * params )
         return;
     }
 
-    // If there is additional input after the second parameter
+    // If there is additional input after the second parameter.
     if ( fscanf( sparams, "%c", &trailingChar ) == 1 && trailingChar != '\n' && trailingChar != EOF
          && trailingChar != '\0' ) {
         fprintf( stderr, "Command %d invalid\n", commandNum );
@@ -233,7 +233,7 @@ void loadCommand( Scene *s, int commandNum, char const * params )
         return;
     }
 
-    // If the name of the Model or file is too long, print error message.
+    // If the name of the Model or file name is too long, print error message.
     if ( strlen( modelName ) > NAME_LEN || strlen( fileName ) > NAME_LEN ) {
         fprintf( stderr, "Command %d invalid\n", commandNum );
         fclose( sparams );
@@ -263,7 +263,7 @@ void loadCommand( Scene *s, int commandNum, char const * params )
 
     @param s the Scene to save to an output file.
     @param commandNum the number of the command that issued the Scene to be saved.
-    @param params the input string that contais the parameters to save the Scene.
+    @param params the input string that contains the parameters to save the Scene.
  */
 void saveCommand( Scene *s, int commandNum, char const * params )
 {
@@ -338,7 +338,7 @@ void deleteCommand( Scene *s, int commandNum, char const * params )
         return;
     }
 
-    // If the model name is too long, print error message.
+    // If the Model name is too long, print error message.
     if ( strlen( modelName ) > NAME_LEN ) {
         fprintf( stderr, "Command %d invalid\n", commandNum );
         fclose( sparams );
@@ -648,13 +648,14 @@ void copyCommand( Scene *s, int commandNum, char const * params )
     bool hasSourceModel = containsModel( s, sourceName );
 
     // If the destination model is already contained within the Scene, or the source Model does not
-    // exist in the scene.print error message.
+    // exist in the scene, print error message.
     if ( hasDestModel || !hasSourceModel ) {
         fprintf( stderr, "Command %d invalid\n", commandNum );
         fclose( sparams );
         return;
     }
 
+    // Get the source Model.
     Model *sourceModel = getModel( s, sourceName );
     if ( !sourceModel ) {
         fclose( sparams );
@@ -662,6 +663,8 @@ void copyCommand( Scene *s, int commandNum, char const * params )
     } else {
         addModel( s, sourceModel->fname, destName );
     }
+
+    // Close file object.
     fclose( sparams );
 }
 
@@ -719,8 +722,8 @@ void mergeCommand( Scene *s, int commandNum, char const * params )
     // Determine if the Scene contains the second source Model.
     bool hasSourceModel2 = containsModel( s, sourceName2 );
 
-    // If the destination model is already contained within the Scene, or the source Model does not
-    // exist in the scene.print error message.
+    // If the destination model is already contained within the Scene, or the source Models do not
+    // exist in the scene, print error message.
     if ( hasDestModel || !hasSourceModel1 || !hasSourceModel2 ) {
         fprintf( stderr, "Command %d invalid\n", commandNum );
         fclose( sparams );
