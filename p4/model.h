@@ -88,6 +88,6 @@ Model *mergeModels( Model * const sourceModel1, Model * const sourceModel2 );
 
     @return A pointer to the duplicate Model.
  */
-Model *copyModels( Model * const sourceModel );
+Model *copyModel( Model * const sourceModel );
 
 #endif
