@@ -58,6 +58,12 @@
 /** The format string used to scan the parameters of the rotate command. */
 #define SCAN_ROTATE "%*s%21s%lf"
 
+/** The format string used to scan the parameters of the copy command. */
+#define SCAN_COPY "%*s%21s%21s"
+
+/** The format string used to scan the parameters of the merge command. */
+#define SCAN_MERGE "%*s%21s%21s%21s"
+
 /** The index value of an invalid command. */
 #define INVALID_COMMAND -1
 
@@ -76,7 +82,7 @@
 /** The index value of the translate command. */
 #define TRANSLATE_COMMAND 4
 
-/** The index value of the scale command. */ 
+/** The index value of the scale command. */
 #define SCALE_COMMAND 5
 
 /** The index value of the rotate command. */
@@ -159,9 +165,9 @@ void flushInput( Scene *s )
 {
     int ch;
     // Clear buffer until new line.
-    while( ( ch = getchar() ) != '\n' ) {
+    while ( ( ch = getchar() ) != '\n' ) {
         // If EOF is encountered, free the scene and exit the program.
-        if( ch == EOF ) {
+        if ( ch == EOF ) {
             freeScene( s );
             exit( EXIT_SUCCESS );
         }
@@ -230,7 +236,7 @@ void loadCommand( Scene *s, int commandNum, char const * params )
     // If the name of the Model or file is too long, print error message.
     if ( strlen( modelName ) > NAME_LEN || strlen( fileName ) > NAME_LEN ) {
         fprintf( stderr, "Command %d invalid\n", commandNum );
-        fclose(sparams);
+        fclose( sparams );
         return;
     }
 
@@ -240,7 +246,7 @@ void loadCommand( Scene *s, int commandNum, char const * params )
     // If the model is already contained within the scene, print error message.
     if ( hasModel ) {
         fprintf( stderr, "Command %d invalid\n", commandNum );
-        fclose(sparams);
+        fclose( sparams );
         return;
     }
 
@@ -248,7 +254,7 @@ void loadCommand( Scene *s, int commandNum, char const * params )
     addModel( s, fileName, modelName );
 
     // Close file object.
-    fclose(sparams);
+    fclose( sparams );
 }
 
 /**
@@ -592,14 +598,176 @@ void quitCommand( Scene *s, int commandNum, char const * params )
     exit( EXIT_SUCCESS );
 }
 
+/**
+    The copyCommand function copies a Model found in the given Scene and adds a duplicate Model
+    to the Scene with a different name. If the source Model cannot be found in the scene, any of
+    the copy parameters are invalid, or there is any trailing input after the parameters, the
+    command is considered invalid and an error message is output.
+
+    @param s the Scene to copy a Model from.
+    @param commandNum the number of the command that issued a Model to be copied.
+    @param params the input string containing the parameters for the copy command.
+ */
 void copyCommand( Scene *s, int commandNum, char const * params )
 {
-    
+    // Array for destination Model name.
+    char destName[ NAME_LEN + 2 ];
+    // Array for source Model name.
+    char sourceName[ NAME_LEN + 2 ];
+    // Char to determine if there is any input remaining on the input line.
+    char trailingChar;
+
+    // Treat params as a file to ensure that the input cursor is moved properly.
+    FILE *sparams = fmemopen( (void *)params, strlen( params ), "r" );
+
+    // If there are not two matches, print error message.
+    if ( fscanf( sparams, SCAN_COPY, destName, sourceName ) != TWO_REQUIRED ) {
+        fprintf( stderr, "Command %d invalid\n", commandNum );
+        fclose( sparams );
+        return;
+    }
+
+    // If there is additional input after the second parameter
+    if ( fscanf( sparams, "%c", &trailingChar ) == 1 && trailingChar != '\n' && trailingChar != EOF
+         && trailingChar != '\0' ) {
+        fprintf( stderr, "Command %d invalid\n", commandNum );
+        fclose( sparams );
+        return;
+    }
+
+    // If the name of the destination or source is too long, print error message.
+    if ( strlen( destName ) > NAME_LEN || strlen( sourceName ) > NAME_LEN ) {
+        fprintf( stderr, "Command %d invalid\n", commandNum );
+        fclose( sparams );
+        return;
+    }
+
+    // Determine if the Scene already contains the destination Model.
+    bool hasDestModel = containsModel( s, destName );
+    // Determne if the Scene contains the source Model.
+    bool hasSourceModel = containsModel( s, sourceName );
+
+    // If the destination model is already contained within the Scene, or the source Model does not
+    // exist in the scene.print error message.
+    if ( hasDestModel || !hasSourceModel ) {
+        fprintf( stderr, "Command %d invalid\n", commandNum );
+        fclose( sparams );
+        return;
+    }
+
+    Model *sourceModel = getModel( s, sourceName );
+    if ( !sourceModel ) {
+        fclose( sparams );
+        return;
+    } else {
+        addModel( s, sourceModel->fname, destName );
+    }
+    fclose( sparams );
 }
 
+/**
+    The mergeCommand function merges two Models found in the given Scene into one Model with a
+    different name. If the source Models cannot be found in the scene, any of
+    the merge parameters are invalid, or there is any trailing input after the parameters, the
+    command is considered invalid and an error message is output.
+
+    @param s the Scene containing the Models to merge.
+    @param commandNum the number of the command that issued Models to be merged.
+    @param params the input string containing the parameters for the merge command.
+ */
 void mergeCommand( Scene *s, int commandNum, char const * params )
 {
-    
+    // Array for destination Model name.
+    char destName[ NAME_LEN + 2 ];
+    // Array for first source Model name.
+    char sourceName1[ NAME_LEN + 2 ];
+    //Array for second source Model name.
+    char sourceName2[ NAME_LEN + 2 ];
+    // Char to determine if there is any input remaining on the input line.
+    char trailingChar;
+
+    // Treat params as a file to ensure that the input cursor is moved properly.
+    FILE *sparams = fmemopen( (void *)params, strlen( params ), "r" );
+
+    // If there are not two matches, print error message.
+    if ( fscanf( sparams, SCAN_MERGE, destName, sourceName1, sourceName2 ) != THREE_REQUIRED ) {
+        fprintf( stderr, "Command %d invalid\n", commandNum );
+        fclose( sparams );
+        return;
+    }
+
+    // If there is additional input after the third parameter
+    if ( fscanf( sparams, "%c", &trailingChar ) == 1 && trailingChar != '\n' && trailingChar != EOF
+         && trailingChar != '\0' ) {
+        fprintf( stderr, "Command %d invalid\n", commandNum );
+        fclose( sparams );
+        return;
+    }
+
+    // If the name of the Models are too long, print error message.
+    if ( strlen( destName ) > NAME_LEN || strlen( sourceName1 ) > NAME_LEN
+         || strlen( sourceName2 ) > NAME_LEN ) {
+        fprintf( stderr, "Command %d invalid\n", commandNum );
+        fclose( sparams );
+        return;
+    }
+
+    // Determine if the Scene already contains the destination Model.
+    bool hasDestModel = containsModel( s, destName );
+    // Determne if the scene contains the first source Model.
+    bool hasSourceModel1 = containsModel( s, sourceName1 );
+    // Determine if the Scene contains the second source Model.
+    bool hasSourceModel2 = containsModel( s, sourceName2 );
+
+    // If the destination model is already contained within the Scene, or the source Model does not
+    // exist in the scene.print error message.
+    if ( hasDestModel || !hasSourceModel1 || !hasSourceModel2 ) {
+        fprintf( stderr, "Command %d invalid\n", commandNum );
+        fclose( sparams );
+        return;
+    }
+
+    // Retrieve the source Models.
+    Model *sourceModel1 = getModel( s, sourceName1 );
+    Model *sourceModel2 = getModel( s, sourceName2 );
+    if ( !sourceModel1 || !sourceModel2 ) {
+        fclose( sparams );
+        return;
+    } else {
+        // Determine the number of points in the merged Model.
+        int numPoints = sourceModel1->pCount + sourceModel2->pCount;
+        // Dynamically allocate the merged Model.
+        Model *m = (Model *)malloc( sizeof( Model ) );
+        m->pList = (double (*)[ NUM_COORDS ])malloc( numPoints * NUM_COORDS * sizeof( double ) );
+        m->pCount = numPoints;
+        strcpy( m->fname, "-" );
+        strcpy( m->name, destName );
+
+        // Counter for merged Model pList index.
+        int count = 0;
+
+        // Give it the points of sourceModel1.
+        for ( int i = 0; i < sourceModel1->pCount; i++ ) {
+            m->pList[ count ][ X_COORD ] = sourceModel1->pList[ i ][ X_COORD ];
+            m->pList[ count ][ Y_COORD ] = sourceModel1->pList[ i ][ Y_COORD ];
+            count++;
+        }
+        // Give it the points of sourceModel2.
+        for ( int i = 0; i < sourceModel1->pCount; i++ ) {
+            m->pList[ count ][ X_COORD ] = sourceModel2->pList[ i ][ X_COORD ];
+            m->pList[ count ][ Y_COORD ] = sourceModel2->pList[ i ][ Y_COORD ];
+            count++;
+        }
+
+        //Add the merged Model to the list.
+        addModelPointer( s, m );
+        // Remove source Models.
+        removeModel( s, sourceName1 );
+        removeModel( s, sourceName2 );
+    }
+
+    // Close file object.
+    fclose( sparams );
 }
 
 /**

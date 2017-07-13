@@ -37,7 +37,7 @@ Model *loadModel( char const *fname )
     }
 
     // If there are no points, or an incomplete line segment, print error message.
-    if( numPoints == 0 || numPoints % 2 != 0 ) {
+    if ( numPoints == 0 || numPoints % 2 != 0 ) {
         fprintf( stderr, "Invalid model format: %s\n", fname );
         fclose( lineCounter );
         return NULL;
@@ -77,7 +77,7 @@ void applyToModel( Model *m, void (*f)( double pt[ NUM_COORDS ], double a, doubl
                    double b )
 {
     // For every point in the Model, apply the function f.
-    for( int i = 0; i < m->pCount; i++ ) {
+    for ( int i = 0; i < m->pCount; i++ ) {
         f( m->pList[ i ], a, b );
     }
 }

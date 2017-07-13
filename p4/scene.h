@@ -111,4 +111,24 @@ void list( Scene *s );
  */
 void sortModels( Scene *s );
 
+/**
+    The getModel function returns a Model pointer to the Model with the given name from
+    the given Scene, or NULL if it can't be found.
+
+    @param s the Scene to retrieve a Model from.
+    @mname the name of the Model to retrieve.
+
+    @return A Model pointer to the Model with the given name, or NULL if it can't be found.
+ */
+Model *getModel( Scene *s, char const *mname );
+
+/**
+    The addModelPointer function adds a Model pointer to the given Scene, resizing the Model
+    array as needed.
+
+    @param s the Scene to add a Model pointer to.
+    @param m the Model pointer to add to the Scene.
+ */
+void addModelPointer( Scene *s, Model * const m );
+
 #endif

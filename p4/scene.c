@@ -94,7 +94,7 @@ void saveScene( Scene *s, char const *fname )
     // Print the line segments of each Model.
     for ( int i = 0; i < s->mCount; i++ ) {
         Model *m = s->mList[ i ];
-        for(int j = 0; j < m->pCount; j++ ) {
+        for (int j = 0; j < m->pCount; j++ ) {
             fprintf( output, "%.3lf %.3lf\n", m->pList[ j ][ 0 ], m->pList[ j ][ 1 ] );
             if ( j % 2 == 1 ) {
                 fprintf( output, "\n" );
@@ -152,7 +152,7 @@ void sortModels( Scene *s )
     }
 
     // If name at i is greater than name at j, swap their positions.
-    for( int i = 0; i < s->mCount; i++ ) {
+    for ( int i = 0; i < s->mCount; i++ ) {
         for ( int j = i + 1; j < s->mCount; j++ ) {
             if ( strcmp( names[ i ], names[ j ] ) > 0 ) {
                temp = s->mList[ i ];
@@ -163,5 +163,32 @@ void sortModels( Scene *s )
                strcpy( names[ j ], tempName );
             }
         }
+    }
+}
+
+Model *getModel( Scene *s, char const *mname )
+{
+    // See if there's a matching Model.
+    for ( int i = 0; i < s->mCount; i++ ) {
+        if ( strcmp( mname, s->mList[ i ]->name ) == 0 ) {
+            return s->mList[ i ];
+        }
+    }
+    // No match.
+    return NULL;
+}
+
+void addModelPointer( Scene *s, Model * const m )
+{
+    // If the Model array is full, reallocate the memory to an array that's 2 times bigger.
+    if ( s->mCount == s->mCap ) {
+        s->mCap *= RESIZE;
+        s->mList = (Model **)realloc( s->mList, s->mCap * sizeof( Model * ) );
+    }
+
+    // If it's not NULL, add it to the list.
+    if ( m ) {
+        s->mList[ s->mCount ] = m;
+        s->mCount++;
     }
 }
