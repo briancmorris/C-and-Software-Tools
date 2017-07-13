@@ -1,9 +1,17 @@
+/**
+    @file model.h
+    @author Brian Morris (bcmorri3)
+
+    The model.h header file contains all of the declarations of functions required to work
+    with Model objects and manipulate them.
+ */
+
 #ifndef _MODEL_H_
 #define _MODEL_H_
 
 #include <stdio.h>
 
-/** Maximum length of name and filename strings. */
+/** Maximum length of a Model name and file name string. */
 #define NAME_LIMIT 20
 
 /** The number of coordinates each point of a line segment contains. */
@@ -28,13 +36,13 @@ typedef struct {
 } Model;
 
 /**
-    This function reads a model from a file with the given name, returning a pointer to a
-    dynamically allocated instance of model. If the input file can't be opened or the Model
+    This function reads a Model from a file with the given name, returning a pointer to a
+    dynamically allocated instance of Model. If the input file can't be opened or the Model
     isn't in the right format, an error message is printed and NULL is returned.
 
     @param fname the name of the input file.
 
-    @return A pointer to a dynamically allocated instance of model, or NULL if there is an error.
+    @return A pointer to a dynamically allocated instance of Model, or NULL if there is an error.
  */
 Model *loadModel( char const *fname );
 

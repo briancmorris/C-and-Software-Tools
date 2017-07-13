@@ -1,3 +1,10 @@
+/**
+    @file scene.h
+    @author Brian Morris (bcmorri3)
+
+    The scene header file contains declarations of all of the functions required to
+    manipulate a Scene object and work with Models.
+ */
 #ifndef _SCENE_H_
 #define _SCENE_H_
 
@@ -50,16 +57,58 @@ void freeScene( Scene *s );
 bool applyToScene(Scene *s, char const *name, void (*f)(double pt[NUM_COORDS], double a, double b),
                   double a, double b);
 
-void addModel( Scene *s, char const *fname, char const *name );
+/**
+    The addModel function loads a Model into the given Scene.
 
-bool containsModel( Scene *s, char const *name );
+    @param s the Scene to load the Model into.
+    @param fname the name of the file to load the Model from.
+    @param mname the name of the Model.
+ */
+void addModel( Scene *s, char const *fname, char const *mname );
 
+/**
+    The containsModel function returns true if the given Scene contains a Model with
+    the given name.
+
+    @param s a Scene that may contain a Mode with the given name.
+    @param mname the name of the Model in question.
+
+    @return true if the given Scene contains the given Model.
+ */
+bool containsModel( Scene *s, char const *mname );
+
+/**
+    The saveScene function saves the the line segments of the models found within the
+    given Scene to an output file with the given file name. If the output file can't  be
+    opened, an error message is output and no output file is saved.
+
+    @param s the Scene to save.
+    @param fname the name of the output file.
+ */
 void saveScene( Scene *s, char const *fname );
 
+/**
+    The removeModel function removes a Model with the give name from the given Scene.
+
+    @param s the Scene to remove a Model from.
+    @param mname the name of the Model to remove.
+*/
 void removeModel( Scene *s, char const *mname );
 
+/**
+    The list function lists the information about the Models contained within the given
+    Scene.
+
+    @param s the Scene to display information about.
+ */
 void list( Scene *s );
 
+/**
+    The sortModels function sorts all of the Models found within the given Scene
+    by Model name, storing them in alphabetical order.
+
+    @param s the Scene that needs to have its Models sorted.
+ */
 void sortModels( Scene *s );
 
 #endif
