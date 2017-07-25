@@ -1,6 +1,6 @@
 /**
     @file bits.h
-    @author
+    @author Brian Morris (bcmorri3)
 
     Header file for the bits.c component, with functions supporting
     reading and writing a file a byte at a time and buffering bits for
@@ -23,37 +23,37 @@
     fields.
 */
 typedef struct {
-  /** Storage for up to 8 bits left over from an earlier read or waiting
+    /** Storage for up to 8 bits left over from an earlier read or waiting
       to be written in a subsequent write. */
-  unsigned char bits;
+    unsigned char bits;
 
-  /** Number of bits currently buffered. */
-  int bcount;
+    /** Number of bits currently buffered. */
+    int bcount;
 } BitBuffer;
 
 /** Write the code stored in the code parameter.  Temporarily
     store bits in the given buffer until we have 8 of them and can
     write them to the file.
+
     @param code to write out
     @param nbits number of bits in code
     @param buffer pointer to storage for bits that can't be written to the
-    file yet.  When this function is called, this buffer may already
-    contain some bits left-over from a previous write.
+           file yet.  When this function is called, this buffer may already
+           contain some bits left-over from a previous write.
     @param fp file we're writing to, opened for writing in binary mode.
 */
 void writeBits( int code, int nbits, BitBuffer *buffer, FILE *fp );
 
-
 /** If there are any bits buffered in buffer, write them out to the
     given file in the high-order bit positions of a byte, leaving zeros
     in the low-order bits.
+
     @param buffer pointer to storage for unwritten bits left over
-    from a previous write.
+           from a previous write.
     @param fp file these bits are to be written to, opened for writing
-    in binary mode
+           in binary mode
 */
 void flushBits( BitBuffer *buffer, FILE *fp );
-
 
 /** Reads and returns the next valid code from the given file. Each valid code 
     starts with a 1 and ends with two consecutive 0s (00).
@@ -65,11 +65,13 @@ void flushBits( BitBuffer *buffer, FILE *fp );
     is reached, -2 is returned.
     The given buffer may contain some bits left over from the last read, and if this
     the read has any left-over bits, it should leave them in that buffer.
+
     @param buffer pointer to storage for left-over from one read call to the
-    next.
+           next.
     @param fp file bits are being read from, opened for reading in binary.
+
     @return value of the valid code read in, -1 if we reach the
-    end-of-file under valid conditions, and -2 if the file is invalid.
+            end-of-file under valid conditions, and -2 if the file is invalid.
 */
 int readBits (BitBuffer *buffer, FILE *fp );
 
