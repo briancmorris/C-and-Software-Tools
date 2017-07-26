@@ -31,8 +31,35 @@ int main( int argc, char *argv[] )
         return INVALID;
     }
 
-//    while ( ) {
-//    }
+    BitBuffer buffer = { .bits = 0x00, .bcount = 0 };
+    int ch;
+    while ( ( ch = fgetc( input ) ) != EOF ) {
+        // Put the character back into the file.
+        ungetc( ch, input );
+
+        // ASCII Symbol to write to output.
+        int code = readBits( &buffer, input );
+        int sym;
+
+        // If the symbol was deemed invalid, close files and return 1.
+        if ( code < 0 ) {
+            fclose( input );
+            fclose( output );
+            fprintf( stderr, "Invalid file\n" );
+            return INVALID;
+        } else {
+            sym = codeToSym( code );
+        }
+
+        if ( sym < 0 ) {
+            fclose( input );
+            fclose( output );
+            fprintf( stderr, "Invalid file\n" );
+            return INVALID;
+        } else {
+            fputc( sym, output );
+        }
+    }
 
     fclose( input );
     fclose( output );

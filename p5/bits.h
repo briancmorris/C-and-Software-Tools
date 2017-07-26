@@ -16,9 +16,6 @@
     a good explanation instead of just the literal value, 8. */
 #define BITS_PER_BYTE 8
 
-/** Number of bits per int. */
-#define BITS_PER_INT 32
-
 /** Buffer space for up to 8 bits that have been written by the
     application but haven't yet been written out to a file, or that
     have been read from a file but not yet used by the application.
@@ -76,6 +73,6 @@ void flushBits( BitBuffer *buffer, FILE *fp );
     @return value of the valid code read in, -1 if we reach the
             end-of-file under valid conditions, and -2 if the file is invalid.
 */
-int readBits (BitBuffer *buffer, FILE *fp );
+int readBits ( BitBuffer *buffer, FILE *fp );
 
 #endif

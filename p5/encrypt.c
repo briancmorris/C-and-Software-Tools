@@ -60,7 +60,7 @@ int main( int argc, char *argv[] )
     }
 
     // If the buffer still contains binary code, flush it.
-    if( buffer.bcount != 0 ) {
+    if( buffer.bcount > 0 ) {
         flushBits( &buffer, output );
     }
 
