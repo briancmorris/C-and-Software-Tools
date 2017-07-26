@@ -13,7 +13,7 @@
 void writeBits( int code, int nbits, BitBuffer *buffer, FILE *fp )
 {
     // The number of leading 0's in the given binary code.
-    int leadingZeros = BITS_PER_INT - nbits;
+    // int leadingZeros = BITS_PER_INT - nbits;
 
     // For the number of bits in the binary code.
     for ( int i = 0; i < nbits; i++ ) {
@@ -28,7 +28,7 @@ void writeBits( int code, int nbits, BitBuffer *buffer, FILE *fp )
         }
 
         // Create a mask that contains only the i-th high order bit of code.
-        unsigned char mask = ( code >> ( leadingZeros - 7 + i ) ) & 0x01;
+        unsigned char mask = ( code >> ( nbits - i - 1 ) ) & 0x01;
 
         // Set bits to the i-th high-order value in code.
         buffer->bits = buffer->bits | mask;

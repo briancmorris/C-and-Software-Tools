@@ -21,3 +21,4 @@ clean:
 	rm -f codes.o codes
 	rm -f bits.o bits
 	rm -f output.txt
+	rm -f output.bin
