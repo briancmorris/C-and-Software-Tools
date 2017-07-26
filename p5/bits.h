@@ -16,6 +16,9 @@
     a good explanation instead of just the literal value, 8. */
 #define BITS_PER_BYTE 8
 
+/** Number of bits per int. */
+#define BITS_PER_INT 32
+
 /** Buffer space for up to 8 bits that have been written by the
     application but haven't yet been written out to a file, or that
     have been read from a file but not yet used by the application.
