@@ -39,7 +39,7 @@ void flushBits( BitBuffer *buffer, FILE *fp )
 {
     // Determine the number of ending zeros that must be added to the buffer and shift.
     int endingZeros = BITS_PER_BYTE - buffer->bcount;
-    buffer->bits = buffer->bits << endingZeros; 
+    buffer->bits = buffer->bits << endingZeros;
 
     // Print the contents of the buffer.
     fprintf( fp, "%c", buffer->bits );
