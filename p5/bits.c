@@ -52,7 +52,7 @@ void flushBits( BitBuffer *buffer, FILE *fp )
 int readBits ( BitBuffer *buffer, FILE *fp )
 {
     // Char to read the bits of, if needed.
-    unsigned char ch;
+    int ch;
 
     /** The bit currently being examined by the function. */
     unsigned char bit;
@@ -153,14 +153,15 @@ int readBits ( BitBuffer *buffer, FILE *fp )
         buffer->bcount = addToBuffer;
 
         // Get the remaining bits in ch.
-        for ( int j = 0; j < addToBuffer; j++ ) {
+        for ( int j = i; j < i + addToBuffer; j++ ) {
             // Shift bits to append a bit.
             buffer->bits = buffer->bits << 1;
             // Create the mask for the j-th high order bit.
-            mask = ch >> ( BITS_PER_BYTE - i - 1 ) & 0x01;
+            mask = ch >> ( BITS_PER_BYTE - j - 1 ) & 0x01;
             // Append the bit.
             buffer->bits |= mask;
-            i++;
+            // Increase bcount.
+            buffer->bcount++;
         }
     }
 
