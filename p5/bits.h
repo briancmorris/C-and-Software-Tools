@@ -12,7 +12,7 @@
 
 #include <stdio.h>
 
-/** Number of bits per byte.  This isn't going to change, but it lets us give
+/** Number of bits per byte. This isn't going to change, but it lets us give
     a good explanation instead of just the literal value, 8. */
 #define BITS_PER_BYTE 8
 
@@ -24,14 +24,14 @@
 */
 typedef struct {
     /** Storage for up to 8 bits left over from an earlier read or waiting
-      to be written in a subsequent write. */
+        to be written in a subsequent write. */
     unsigned char bits;
 
     /** Number of bits currently buffered. */
     int bcount;
 } BitBuffer;
 
-/** Write the code stored in the code parameter.  Temporarily
+/** Write the code stored in the code parameter. Temporarily
     store bits in the given buffer until we have 8 of them and can
     write them to the file.
 
@@ -58,7 +58,7 @@ void flushBits( BitBuffer *buffer, FILE *fp );
 /** Reads and returns the next valid code from the given file. Each valid code 
     starts with a 1 and ends with two consecutive 0s (00).
     if no bits or only 0s have been read when the end of file is reached,
-    -1 is returned. 
+    -1 is returned.
     If the first bit read is a 1 and the end of file is reached before 
     two consecutive 0s (00) are read, -2 is returned.
     If the first bit read is a 0 and a 1 is read before the end of the file

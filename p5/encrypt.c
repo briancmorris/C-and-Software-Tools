@@ -1,3 +1,13 @@
+/**
+    @file encrypt.c
+    @author Brian Morris (bcmorri3)
+
+    The encrypt program accepts command line arguments to encrypt a plain
+    text file and convert its contents to a binary file. This program takes
+    advantage of the codes.h and bits.h header files to properly encrypt
+    the contents of the plain text file.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "codes.h"
@@ -9,6 +19,16 @@
 /** The exit status of the program if the given input or output files are invalid. */
 #define INVALID 1
 
+/**
+    The main function is the starting point of the program. Responsible for controlling
+    file IO and invalid use cases. If the use case was deemed invalid, 1 is returned. Otherwise
+    a standard exit status of 0 is returned.
+
+    @param argc The number of command line arguments.
+    @param argv The array containing the command line arguments.
+
+    @return Exit status for the program. 0 if valid, 1 if invalid.
+ */
 int main( int argc, char *argv[] )
 {
     // If the number of required arguments is invalid, print error message.
@@ -36,18 +56,19 @@ int main( int argc, char *argv[] )
         return INVALID;
     }
 
-    // Initialize buffer to empty values.
+    // Initialize empty buffer.
     BitBuffer buffer = { .bits = 0x00, .bcount = 0 };
 
-    // Loop until EOF.
+    // Used to check for EOF.
     int ch;
+    // While ch is not EOF.
     while ( ( ch = fgetc( input ) ) != EOF ) {
         // Get the binary code that represents the character.
         int code = symToCode( ch );
         // Get the number of bits used for the binary code.
         int nbits = bitsInCode( ch );
 
-        // If the code is invalid, print error messsage and close files.
+        // If the code or number of bits is invalid, print error messsage and close files.
         if ( code == INVALID_CODE || nbits == INVALID_CODE ) {
             fclose( input );
             fclose( output );

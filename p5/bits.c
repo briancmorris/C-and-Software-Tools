@@ -63,107 +63,98 @@ int readBits ( BitBuffer *buffer, FILE *fp )
     // The binary code that has been parsed from the character.
     int code = 0x0000;
 
-    // The number of characters currently used by this function, at most 2.
-    int charCount = 0;
-
     // Counter to keep track of the number of consecutive zeros found in ch.
     int zeroCount = 0;
 
     // Counter to keep track of the number of ones found in ch.
     int oneCount = 0;
 
-    // Int that is 1 if EOF has been found.
-    int eofFound = 0;
-
     // The number of bits in the ASCII code.
     int numBits = 0;
 
-    // The current shift amount needed to move bits.
-    int i = 0;
+    // While there's content in the buffer.
+    while( buffer->bcount > 0 ) {
+        // Decrease bcount.
+        buffer->bcount--;
+        // Get the high order bit from bits.
+        bit = (buffer->bits >> buffer->bcount) & 0x01;
+        // Shift the code to make space for an additional bit.
+        code = code << 1;
+        // Append the bit to code.
+        code |= bit;
 
-    while ( zeroCount < 2 ) {
-        if ( numBits < buffer->bcount ) {
-            // Get the i-th high order bit from bits.
-            bit = buffer->bits >> ( BITS_PER_BYTE - i - 1 ) & 0x01;
-            // Get the first bit.
-            if ( numBits == 0 ) {
-                firstBit =  bit;
-            }
+        // Get the first bit.
+        if ( numBits == 0 ) {
+            firstBit = bit;
+        }
+
+        // If the bit is a 1, else 0.
+        if ( bit ) {
+            oneCount++;
+            zeroCount = 0;
+        } else {
+            zeroCount++;
+        }
+
+        // Clear the bit inside the buffer.
+        buffer->bits &= ~( 1 << buffer->bcount );
+        if( zeroCount == 2 ){
+            return code;
+        }
+        // Increase number of bits.
+        numBits++;
+    }
+
+    // While we need an additional character from the file.
+    while ( ( ch = fgetc( fp ) ) != EOF ) {
+        for(int i = 0; i < BITS_PER_BYTE; i++){
+            // Get the i-th high order bit.
+            bit = ( ch >> ( BITS_PER_BYTE - i - 1 ) ) & 0x01;
             // Shift the code to make space for an additional bit.
             code = code << 1;
             // Append the bit to code.
             code |= bit;
-        } else {
-            // Get the first and second required character if needed.
-            if ( charCount == 0 && numBits - buffer->bcount == 0 ) {
-                i = 0;
-                ch = fgetc( fp );
-                charCount++;
-            } else if ( charCount == 1 && numBits - BITS_PER_BYTE - buffer->bcount == 0 ) {
-                i = 0;
-                ch = fgetc( fp );
-                charCount++;
-            }
 
-            // If ch is EOF.
-            if ( ch == EOF ) {
-                eofFound++;
-                // If no bits or only 0's have been read, return -1.
-                if ( numBits == 0 || oneCount == 0 ) {
-                    return -1;
-                } else if( firstBit == 1 && zeroCount < 2 ) {
-                    return -2;
-                }
-            }
-
-            // Get the i-th high order bit from ch.
-            bit = ch >> ( BITS_PER_BYTE - i - 1 ) & 0x01;
-            // Shift code to ensure there is room for 1 more bit.
-            code = code << 1;
-            // Append the current bit to the code.
-            code |= bit;
-            // Get first bit if needed.
+            // Find the first bit.
             if ( numBits == 0 ) {
                 firstBit = bit;
             }
-        }
 
-        // If the bit is a one.
-        if ( bit == 1 ) {
-            oneCount++;
-            // If the first bit read was 0 and EOF has not been found, return -2.
-            if( firstBit == 0 && eofFound == 0 ) {
-                return -2;
-            } else if ( zeroCount > 0 ) { // Reset consecutive 0 counter.
+            // If the bit is a 1, else 0.
+            if( bit ) {
+                oneCount++;
                 zeroCount = 0;
+            } else {
+                zeroCount++;
             }
-        } else {
-            zeroCount++;
-        }
-        numBits++;
-        i++;
-    }
 
-    if ( ( BITS_PER_BYTE  - i ) > 0 && charCount > 0 ) {
-        // The number of bits that need to be added to the buffer from ch.
-        int addToBuffer = BITS_PER_BYTE - i;
-        // Mask for appending values to buffer.
-        unsigned char mask;
-        // Assign the new value of bcount.
-        buffer->bcount = addToBuffer;
-
-        // Get the remaining bits in ch.
-        for ( int j = i; j < i + addToBuffer; j++ ) {
-            // Shift bits to append a bit.
-            buffer->bits = buffer->bits << 1;
-            // Create the mask for the j-th high order bit.
-            mask = ch >> ( BITS_PER_BYTE - j - 1 ) & 0x01;
-            // Append the bit.
-            buffer->bits |= mask;
-            // Increase bcount.
-            buffer->bcount++;
+            // If the end of the code has been reached.
+            if( zeroCount == 2 ){
+                // Number of remaining bits to add to the buffer.
+                int remainingBits = BITS_PER_BYTE - i;
+                // Put the remaining bits from ch into the buffer.
+                for ( int j = 0; j < remainingBits; j++ ) {
+                    // Shift bits to make space for an additional bit.
+                    buffer->bits = buffer->bits << 1;
+                    // Create the mask for the j-th high order bit.
+                    int mask = ( ch >> (remainingBits - j - 1 ) ) & 0x01;
+                    // Append the bit.
+                    buffer->bits |= mask;
+                    // Increase bcount.
+                    buffer->bcount++;
+                }
+                // Return the code.
+                return code;
+            }
+            // Increase the number of bits used in this code.
+            numBits++;
         }
     }
 
-    return code;
+    // If the first bit was 1 and two 0's weren't found, else return -1.
+    if ( firstBit && zeroCount < 2 ) {
+        return -2;
+    } else {
+        return -1;
+    }
 }

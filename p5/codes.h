@@ -10,39 +10,39 @@
 #define INVALID_CODE -1
 
 /**
-    The number of codes that correspond the number of ASCII codes and binary codes handled
+    The number of binary codes that correspond the number of ASCII codes and binary codes handled
     by this program.
 */
 #define NUM_CODES 28
 
-/** The number of bits in binary code that uses 3 bits. */
+/** The number of bits of a binary code that uses 3 bits. */
 #define THREE_BITS 3
 
-/** The number of bits in binary code that uses 4 bits. */
+/** The number of bits of a binary code that uses 4 bits. */
 #define FOUR_BITS 4
 
-/** The number of bits in binary code that uses 5 bits. */
+/** The number of bits of a binary code that uses 5 bits. */
 #define FIVE_BITS 5
 
-/** The number of bits in binary code that uses 6 bits. */
+/** The number of bits of a binary code that uses 6 bits. */
 #define SIX_BITS 6
 
-/** The number of bits in binary code that uses 7 bits. */
+/** The number of bits of a binary code that uses 7 bits. */
 #define SEVEN_BITS 7
 
-/** The number of bits in binary code that uses 8 bits. */
+/** The number of bits of a binary code that uses 8 bits. */
 #define EIGHT_BITS 8
 
-/** The number of bits in binary code that uses 9 bits. */
+/** The number of bits of a binary code that uses 9 bits. */
 #define NINE_BITS 9
 
-/** The number of bits in binary code that uses 10 bits. */
+/** The number of bits of a binary code that uses 10 bits. */
 #define TEN_BITS 10
 
-/** The number of bits in binary code that uses 11 bits. */
+/** The number of bits of a binary code that uses 11 bits. */
 #define ELEVEN_BITS 11
 
-/** The number of bits in binary code that uses 12 bits. */
+/** The number of bits of a binary code that uses 12 bits. */
 #define TWELVE_BITS 12
 
 /**
