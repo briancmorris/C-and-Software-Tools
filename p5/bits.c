@@ -73,7 +73,7 @@ int readBits ( BitBuffer *buffer, FILE *fp )
     int numBits = 0;
 
     // While there's content in the buffer.
-    while( buffer->bcount > 0 ) {
+    while ( buffer->bcount > 0 ) {
         // Decrease bcount.
         buffer->bcount--;
         // Get the high order bit from bits.
@@ -98,7 +98,7 @@ int readBits ( BitBuffer *buffer, FILE *fp )
 
         // Clear the bit inside the buffer.
         buffer->bits &= ~( 1 << buffer->bcount );
-        if( zeroCount == 2 ){
+        if ( zeroCount == 2 ){
             return code;
         }
         // Increase number of bits.
@@ -107,7 +107,7 @@ int readBits ( BitBuffer *buffer, FILE *fp )
 
     // While we need an additional character from the file.
     while ( ( ch = fgetc( fp ) ) != EOF ) {
-        for(int i = 0; i < BITS_PER_BYTE; i++){
+        for ( int i = 0; i < BITS_PER_BYTE; i++ ){
             // Get the i-th high order bit.
             bit = ( ch >> ( BITS_PER_BYTE - i - 1 ) ) & 0x01;
             // Shift the code to make space for an additional bit.
@@ -121,7 +121,7 @@ int readBits ( BitBuffer *buffer, FILE *fp )
             }
 
             // If the bit is a 1, else 0.
-            if( bit ) {
+            if ( bit ) {
                 oneCount++;
                 zeroCount = 0;
             } else {
@@ -129,7 +129,7 @@ int readBits ( BitBuffer *buffer, FILE *fp )
             }
 
             // If the end of the code has been reached.
-            if( zeroCount == 2 ){
+            if ( zeroCount == 2 ){
                 // Number of remaining bits to add to the buffer.
                 int remainingBits = BITS_PER_BYTE - i;
                 // Put the remaining bits from ch into the buffer.

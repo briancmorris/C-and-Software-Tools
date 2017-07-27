@@ -18,8 +18,8 @@ int symToCode( unsigned char ch )
                      0x6C, 0x34, 0x36C, 0x5B4, 0xDAC, 0xB4, 0x54, 0xC, 0xAC, 0x2AC, 0x16C, 0x6AC,
                      0xD6C, 0x6D4, 0x5AC, 0x56C };
 
-    for( int i = 0; i < NUM_CODES; i++ ) {
-        if( keys[ i ] == ch ) {
+    for ( int i = 0; i < NUM_CODES; i++ ) {
+        if ( keys[ i ] == ch ) {
             return values[ i ];
         }
     }
@@ -39,8 +39,8 @@ int bitsInCode( unsigned char ch )
                      EIGHT_BITS, TEN_BITS, NINE_BITS, ELEVEN_BITS, TWELVE_BITS, ELEVEN_BITS,
                      ELEVEN_BITS, ELEVEN_BITS };
 
-    for( int i = 0; i < NUM_CODES; i++ ) {
-        if( keys[ i ] == ch ) {
+    for ( int i = 0; i < NUM_CODES; i++ ) {
+        if ( keys[ i ] == ch ) {
             return values[ i ];
         }
     }
@@ -58,8 +58,8 @@ int codeToSym( int code )
                      'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
                      ' ', '\n' };
 
-    for( int i = 0; i < NUM_CODES; i++ ) {
-        if( keys[ i ] == code ) {
+    for ( int i = 0; i < NUM_CODES; i++ ) {
+        if ( keys[ i ] == code ) {
             return values[ i ];
         }
     }
